@@ -4,7 +4,6 @@
 // Components
 import NavBar from './components/NavBar/NavBar';
 import Restaurants from './components/Restaurants/Restaurants';
-import RestaurantPage from './components/RestaurantPage/RestaurantPage';
 import Cart from './components/Cart/Cart';
 import Orders from './components/Orders/Orders';
 import Notifications from './components/Notifications/Notifications';
@@ -32,8 +31,7 @@ import SigninForm from './components/SigninForm/SigninForm';
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Restaurants />} />
-            <Route path="/restaurant/:id" element={<RestaurantPage />} />
-  
+            <Route path="/restaurant/:id" element={<Restaurants />} />  
             {/* Protected Routes */}
             {user ? (
               <>
