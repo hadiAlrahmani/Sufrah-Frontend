@@ -13,10 +13,10 @@ import SigninForm from './components/SigninForm/SigninForm';
 import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 import CreateRestaurant from "./components/AdminDashboard/CreateRestaurant/CreateRestaurant";
 import ManageOrders from "./components/AdminDashboard/ManageOrders/ManageOrders";
-
+import ManageMenu from "./components/AdminDashboard/ManageMenu/ManageMenu";
 
 // Services
-import * as authService from './services/authService'; // using the method from authservice
+import * as authService from './services/authService'; 
 
 // Authentication Context
 export const AuthedUserContext = createContext(null);
@@ -51,7 +51,8 @@ const App = () => {
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/create-restaurant" element={<CreateRestaurant />} />
                 <Route path="/admin/order/:id" element={<ManageOrders />} />
-
+                <Route path="/admin/restaurant/:id/menu" element={<ManageMenu />} />
+                <Route path="/admin/restaurant/:id/menu" element={<ManageMenu />} />
                 </>
               )}
             </>
