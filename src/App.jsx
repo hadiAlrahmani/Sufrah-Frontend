@@ -10,6 +10,10 @@ import Orders from './components/Orders/Orders';
 import Notifications from './components/Notifications/Notifications';
 import SignupForm from './components/SignupForm/SignupForm';
 import SigninForm from './components/SigninForm/SigninForm';
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
+import CreateRestaurant from "./components/AdminDashboard/CreateRestaurant/CreateRestaurant";
+import ManageOrders from "./components/AdminDashboard/ManageOrders/ManageOrders";
+
 
 // Services
 import * as authService from './services/authService'; // using the method from authservice
@@ -33,12 +37,23 @@ const App = () => {
           {/* Public Routes */}
           <Route path="/" element={<Restaurants />} />
           <Route path="/restaurant/:id" element={<Restaurant />} />
+  
           {/* Protected Routes */}
           {user ? (
             <>
               <Route path="/cart" element={<Cart />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/notifications" element={<Notifications />} />
+  
+              {/* Admin Routes */}
+              {user?.role === "admin" && (
+                <>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/create-restaurant" element={<CreateRestaurant />} />
+                <Route path="/admin/order/:id" element={<ManageOrders />} />
+
+                </>
+              )}
             </>
           ) : (
             <>
@@ -47,7 +62,7 @@ const App = () => {
               <Route path="/notifications" element={<Navigate to="/signin" />} />
             </>
           )}
-
+  
           {/* Auth Routes */}
           <Route path="/signup" element={<SignupForm setUser={setUser} />} />
           <Route path="/signin" element={<SigninForm setUser={setUser} />} />
