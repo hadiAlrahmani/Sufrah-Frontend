@@ -48,7 +48,7 @@ const Notifications = () => {
         throw new Error("Failed to update notification status");
       }
 
-      // Update state to reflect the change
+      // Update state to mark as read
       setNotifications((prev) =>
         prev.map((notif) =>
           notif._id === id ? { ...notif, read: true } : notif
@@ -59,6 +59,10 @@ const Notifications = () => {
     }
   };
 
+  const clearNotifications = () => {
+    setNotifications([]);
+  };
+
   if (loading) return <p>Loading notifications...</p>;
   if (error) return <p>Error: {error}</p>;
   if (notifications.length === 0) return <p>No new notifications.</p>;
@@ -66,6 +70,7 @@ const Notifications = () => {
   return (
     <div>
       <h1>Your Notifications</h1>
+      <button onClick={clearNotifications}>Clear Notifications</button>
       <ul>
         {notifications.map((notif) => (
           <li key={notif._id} onClick={() => markAsRead(notif._id)}>
