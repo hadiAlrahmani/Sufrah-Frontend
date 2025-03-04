@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -13,13 +15,13 @@ const Cart = () => {
   // Recalculate total price whenever cartItems change
   useEffect(() => {
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    setTotalPrice(total.toFixed(3));  // Used help from the internet
+    setTotalPrice(total.toFixed(3));
   }, [cartItems]);
 
   // Increase quantity
   const increaseQuantity = (itemId) => {
     const updatedCart = cartItems.map((item) =>
-      item._id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+      item._id === itemId ? { ...item, quantity: item.quantity + 1 } : item // If item ID matches, increase its quantity by 1
     );
     updateCart(updatedCart);
   };
@@ -29,20 +31,73 @@ const Cart = () => {
     let updatedCart = cartItems.map((item) =>
       item._id === itemId ? { ...item, quantity: item.quantity - 1 } : item
     );
+    // Remove item if its quantity is 0
     updatedCart = updatedCart.filter((item) => item.quantity > 0);
     updateCart(updatedCart);
   };
 
-  // Remove item from cart
+  // Remove an item from the cart
   const removeFromCart = (itemId) => {
     const updatedCart = cartItems.filter((item) => item._id !== itemId);
     updateCart(updatedCart);
   };
 
-  // Update cart and save to local storage
+  // Update cart in both state and local storage
   const updateCart = (updatedCart) => {
     setCartItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));  // Used help from the internet
+    //Saves the updated cart permanently in the browser's local storage so that the data is not lost when the page refreshes. (Used internet help).
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  // Checkout Function
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    // Get user token
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to place an order.");
+      return;
+    }
+
+    // Takes restaurant ID's to check that all items in cart are from the same restaurant.
+    const restaurantId = cartItems[0].restaurant;
+
+    const orderData = {
+      restaurant: restaurantId,
+      items: cartItems.map((item) => ({
+        menuItem: item._id,
+        quantity: item.quantity
+      }))
+    };
+
+    // Used the internet help
+    try {
+      const res = await fetch(`${BACKEND_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Send token for authentication
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to place order");
+
+      // Clear cart after successful order
+      localStorage.removeItem("cart");
+      setCartItems([]);
+      setTotalPrice(0);
+
+      alert("Order placed successfully!");
+      window.location.href = "/orders";
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -65,6 +120,7 @@ const Cart = () => {
             ))}
           </ul>
           <h2>Total: {totalPrice} BD</h2>
+          <button onClick={handleCheckout}>Checkout</button>
         </>
       )}
     </div>
