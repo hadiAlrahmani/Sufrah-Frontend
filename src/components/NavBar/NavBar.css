@@ -1,0 +1,29 @@
+
+/* Custom styles for the navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow */
+}
+
+.nav-link {
+    transition: color 0.3s;
+    /* Smooth color transition */
+}
+
+.nav-link:hover {
+    color: #007bff;
+    /* Change color on hover */
+}
+
+.nav-item .disabled {
+    color: #6c757d;
+    /* Disabled link color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px;
+        /* Adjust padding for smaller screens */
+    }
+}
