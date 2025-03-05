@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from "../../../services/menuService";
-import "./ManageMenu.css"; // Make sure to import the CSS file
+import {
+  fetchMenuItems,
+  addMenuItem,
+  updateMenuItem,
+  deleteMenuItem,
+} from "../../../services/menuService";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "./ManageMenu.css"; // Optional: For additional custom styles
 
 const ManageMenu = () => {
   const { id } = useParams();
@@ -82,82 +88,108 @@ const ManageMenu = () => {
   };
 
   return (
-    <div className="manage-menu-container">
-      <h1 className="manage-menu-title">Manage Menu</h1>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Manage Menu</h1>
 
-      <h2 className="manage-menu-subtitle">
-        {editingItem ? "Edit Menu Item" : "Add Menu Item"}
-      </h2>
-      {error && <p className="error-message">{error}</p>}
+      {error && (
+        <div className="alert alert-danger text-center">{error}</div>
+      )}
 
-      <form onSubmit={editingItem ? handleSaveEdit : handleSubmit} className="menu-form">
-        <input
-          type="text"
-          name="name"
-          placeholder="Item Name"
-          value={editingItem ? editingItem.name : newItem.name}
-          onChange={handleChange}
-          className="input-field"
-          required
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={editingItem ? editingItem.description : newItem.description}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price (BD)"
-          value={editingItem ? editingItem.price : newItem.price}
-          onChange={handleChange}
-          className="input-field"
-          required
-        />
-        <select
-          name="category"
-          value={editingItem ? editingItem.category : newItem.category}
-          onChange={handleChange}
-          className="select-field"
+      <div className="card p-4 shadow mb-5">
+        <h2 className="text-center mb-3">
+          {editingItem ? "Edit Menu Item" : "Add Menu Item"}
+        </h2>
+        <form
+          onSubmit={editingItem ? handleSaveEdit : handleSubmit}
         >
-          <option value="">Select Category</option>
-          <option value="Appetizers">Appetizers</option>
-          <option value="Main Course">Main Course</option>
-          <option value="Desserts">Desserts</option>
-          <option value="Drinks">Drinks</option>
-        </select>
-        <div className="button-group">
-          <button type="submit" className="submit-button">
-            {editingItem ? "Save Changes" : "Add Item"}
-          </button>
-          {editingItem && (
-            <button
-              type="button"
-              className="cancel-button"
-              onClick={() => setEditingItem(null)}
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </form>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="name"
+              placeholder="Item Name"
+              value={editingItem ? editingItem.name : newItem.name}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
 
-      <h2 className="manage-menu-subtitle">Current Menu</h2>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="description"
+              placeholder="Description"
+              value={editingItem ? editingItem.description : newItem.description}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+
+          <div className="mb-3">
+            <input
+              type="number"
+              name="price"
+              placeholder="Price (BD)"
+              value={editingItem ? editingItem.price : newItem.price}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <select
+              name="category"
+              value={editingItem ? editingItem.category : newItem.category}
+              onChange={handleChange}
+              className="form-select"
+            >
+              <option value="">Select Category</option>
+              <option value="Appetizers">Appetizers</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Desserts">Desserts</option>
+              <option value="Drinks">Drinks</option>
+            </select>
+          </div>
+
+          <div className="d-grid gap-2">
+            <button type="submit" className="btn btn-primary">
+              {editingItem ? "Save Changes" : "Add Item"}
+            </button>
+            {editingItem && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setEditingItem(null)}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+
+      <h2 className="text-center mb-3">Current Menu</h2>
       {menuItems.length === 0 ? (
-        <p>No menu items available.</p>
+        <p className="text-center">No menu items available.</p>
       ) : (
-        <ul className="menu-items-list">
+        <ul className="list-group">
           {menuItems.map((item) => (
-            <li key={item._id} className="menu-item">
-              <strong>{item.name}</strong> - {item.price} BD
-              <div className="item-actions">
-                <button className="edit-button" onClick={() => handleEditClick(item)}>
+            <li key={item._id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{item.name}</strong> - {item.price} BD
+              </div>
+              <div>
+                <button
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => handleEditClick(item)}
+                >
                   Edit
                 </button>
-                <button className="delete-button" onClick={() => handleDelete(item._id)}>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDelete(item._id)}
+                >
                   Delete
                 </button>
               </div>

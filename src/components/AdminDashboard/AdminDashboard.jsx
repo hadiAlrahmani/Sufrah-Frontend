@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchAdminRestaurants, fetchAdminOrders } from "../../services/adminService";
-import './AdminDashboard.css'; // Import the CSS file for styles
+import {
+  fetchAdminRestaurants,
+  fetchAdminOrders,
+} from "../../services/adminService";
+import "./AdminDashboard.css"; // Import the CSS file for styles
 
 const AdminDashboard = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -30,9 +33,19 @@ const AdminDashboard = () => {
       {restaurants.length > 0 ? (
         <ul className="admin-dashboard__list">
           {restaurants.map((restaurant) => (
-            <li key={restaurant._id} className="admin-dashboard__list-item">
-              <h3 className="admin-dashboard__restaurant-name">{restaurant.name}</h3>
-              <Link className="admin-dashboard__link" to={`/admin/restaurant/${restaurant._id}/menu`}>Manage Menu</Link>
+            <li
+              key={restaurant._id}
+              className="admin-dashboard__list-item d-flex justify-content-between align-items-center"
+            >
+              <h3 className="admin-dashboard__restaurant-name mb-0">
+                {restaurant.name}
+              </h3>
+              <Link
+                className="btn btn-primary admin-dashboard__link"
+                to={`/admin/restaurant/${restaurant._id}/menu`}
+              >
+                Manage Menu
+              </Link>
             </li>
           ))}
         </ul>
@@ -44,11 +57,20 @@ const AdminDashboard = () => {
       {orders.length > 0 ? (
         <ul className="admin-dashboard__list">
           {orders.map((order) => (
-            <li key={order._id} className="admin-dashboard__list-item">
-              <p className="admin-dashboard__order-details">
-                Order from {order.restaurant?.name || "Unknown"} - {order.status}
-                <Link className="admin-dashboard__link" to={`/admin/order/${order._id}`}>View Order</Link>
+            <li
+              key={order._id}
+              className="admin-dashboard__list-item d-flex justify-content-between align-items-center"
+            >
+              <p className="admin-dashboard__order-details mb-0">
+                Order from {order.restaurant?.name || "Unknown"} -{" "}
+                {order.status}
               </p>
+              <Link
+                className="btn btn-primary admin-dashboard__link"
+                to={`/admin/order/${order._id}`}
+              >
+                View Order
+              </Link>
             </li>
           ))}
         </ul>

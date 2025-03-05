@@ -1,34 +1,31 @@
-/* Custom Navbar Styling */
+
 .navbar {
     padding: 1rem;
     font-size: 1.1rem;
   }
   
-  /* Welcome text styling */
+  
   .welcome-text {
     color: #f8f9fa;
     font-weight: bold;
     padding-right: 15px;
   }
   
-  /* Admin Dashboard link highlight */
+  
   .admin-link {
     font-weight: bold;
-    color: #ffc107 !important; /* Yellow color for admin */
+    color: #ffc107 !important; 
   }
   
-  /* Signout Button */
   .signout-btn {
-    color: #dc3545 !important; /* Red color */
+    color: #dc3545 !important; 
     font-weight: bold;
   }
   
-  /* Navbar links hover effect */
   .navbar-nav .nav-link:hover {
-    color: #f8f9fa !important; /* Light color on hover */
+    color: #f8f9fa !important; 
   }
   
-  /* Mobile Menu Customizations */
   @media (max-width: 768px) {
     .navbar-nav {
       text-align: center;

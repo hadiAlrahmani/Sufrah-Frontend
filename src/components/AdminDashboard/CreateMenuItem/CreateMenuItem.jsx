@@ -111,7 +111,7 @@ const CreateMenuItem = () => {
           className="input-field"
         >
           <option value="">Select a category</option>
-          <option value="Appetizers">Appetizers</option>
+          <option value="Appetizers">Appetizers</option>  
           <option value="Main Course">Main Course</option>
           <option value="Desserts">Desserts</option>
           <option value="Drinks">Drinks</option>
