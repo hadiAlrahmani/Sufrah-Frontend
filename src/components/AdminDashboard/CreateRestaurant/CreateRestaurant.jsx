@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createRestaurant } from "../../../services/restaurantService";
-import "./CreateRestaurant.css";  // Import the CSS file for styling
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "./CreateRestaurant.css"; // Optional: For additional custom styles
 
 const CreateRestaurant = () => {
   const [formData, setFormData] = useState({
@@ -28,42 +29,60 @@ const CreateRestaurant = () => {
   };
 
   return (
-    <div className="create-restaurant-container">
-      <h1>Create a New Restaurant</h1>
-      <form className="create-restaurant-form" onSubmit={handleSubmit}>
-        <input
-          className="input-field"
-          type="text"
-          name="name"
-          placeholder="Restaurant Name"
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-field"
-          type="text"
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-field"
-          type="text"
-          name="location"
-          placeholder="Location"
-          onChange={handleChange}
-          required
-        />
-        <input
-          className="input-field"
-          type="text"
-          name="openingHours"
-          placeholder="Opening Hours"
-          onChange={handleChange}
-          required
-        />
-        <button className="submit-btn" type="submit">Create Restaurant</button>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">Create a New Restaurant</h1>
+      <form onSubmit={handleSubmit} className="card p-4 shadow">
+        <div className="mb-3">
+          <input
+            type="text"
+            name="name"
+            placeholder="Restaurant Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="text"
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <div className="mb-3">
+          <input
+            type="text"
+            name="openingHours"
+            placeholder="Opening Hours"
+            value={formData.openingHours}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary w-100">
+          Create Restaurant
+        </button>
       </form>
     </div>
   );
