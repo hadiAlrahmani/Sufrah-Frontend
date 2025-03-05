@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.title {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.loading-text, .error-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff4d4d;
+}
+
+.restaurant-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+
+.restaurant-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.restaurant-link {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.restaurant-link:hover {
+  color: #0056b3;
+}
