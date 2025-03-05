@@ -1,0 +1,72 @@
+Global Styles
+.admin-dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .admin-dashboard__title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .admin-dashboard__section-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #555;
+    margin-top: 30px;
+  }
+  
+  .admin-dashboard__btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .admin-dashboard__btn:hover {
+    background-color: #45a049;
+  }
+  
+  .admin-dashboard__list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .admin-dashboard__list-item {
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .admin-dashboard__restaurant-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #222;
+  }
+  
+  .admin-dashboard__link {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .admin-dashboard__link:hover {
+    text-decoration: underline;
+  }
+  
+  .admin-dashboard__order-details {
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .admin-dashboard__no-data {
+    color: #999;
+    font-size: 1rem;
+    margin-top: 10px;
+  }

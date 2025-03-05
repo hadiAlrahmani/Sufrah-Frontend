@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as authService from '../../services/authService';
+import './SignupForm.css'; // Importing the CSS file for this component
 
 const SignupForm = (props) => {
   const navigate = useNavigate();
@@ -37,11 +38,11 @@ const SignupForm = (props) => {
   };
 
   return (
-    <main>
-      <h1>Sign Up</h1>
-      <p>{message}</p>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="signup-container">
+      <h1 className="signup-title">Sign Up</h1>
+      <p className="error-message">{message}</p>
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
@@ -49,9 +50,10 @@ const SignupForm = (props) => {
             value={username}
             name="username"
             onChange={handleChange}
+            className="form-input"
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -59,9 +61,10 @@ const SignupForm = (props) => {
             value={password}
             name="password"
             onChange={handleChange}
+            className="form-input"
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="confirm">Confirm Password:</label>
           <input
             type="password"
@@ -69,16 +72,17 @@ const SignupForm = (props) => {
             value={passwordConf}
             name="passwordConf"
             onChange={handleChange}
+            className="form-input"
           />
         </div>
-        <div>
-          <button disabled={isFormInvalid()}>Sign Up</button>
+        <div className="button-group">
+          <button type="submit" disabled={isFormInvalid()} className="btn btn-primary">Sign Up</button>
           <Link to="/">
-            <button>Cancel</button>
+            <button type="button" className="btn btn-secondary">Cancel</button>
           </Link>
         </div>
       </form>
-    </main>
+    </div>
   );
 };
 

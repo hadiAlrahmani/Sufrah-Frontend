@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createRestaurant } from "../../../services/restaurantService";
+import "./CreateRestaurant.css";  // Import the CSS file for styling
 
 const CreateRestaurant = () => {
   const [formData, setFormData] = useState({
@@ -27,14 +28,42 @@ const CreateRestaurant = () => {
   };
 
   return (
-    <div>
+    <div className="create-restaurant-container">
       <h1>Create a New Restaurant</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Restaurant Name" onChange={handleChange} required />
-        <input type="text" name="description" placeholder="Description" onChange={handleChange} required />
-        <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
-        <input type="text" name="openingHours" placeholder="Opening Hours" onChange={handleChange} required />
-        <button type="submit">Create Restaurant</button>
+      <form className="create-restaurant-form" onSubmit={handleSubmit}>
+        <input
+          className="input-field"
+          type="text"
+          name="name"
+          placeholder="Restaurant Name"
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-field"
+          type="text"
+          name="description"
+          placeholder="Description"
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-field"
+          type="text"
+          name="location"
+          placeholder="Location"
+          onChange={handleChange}
+          required
+        />
+        <input
+          className="input-field"
+          type="text"
+          name="openingHours"
+          placeholder="Opening Hours"
+          onChange={handleChange}
+          required
+        />
+        <button className="submit-btn" type="submit">Create Restaurant</button>
       </form>
     </div>
   );

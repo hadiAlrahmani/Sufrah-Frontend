@@ -4,6 +4,7 @@ import { fetchRestaurantDetails } from "../../services/restaurantService";
 import { fetchMenuItems } from "../../services/menuService";
 import { addToCart } from "../../services/cartService";
 import { AuthedUserContext } from "../../App";
+import "./Restaurant.css"; // ✅ Import the CSS file
 
 const Restaurant = () => {
   const { id } = useParams();
@@ -38,32 +39,38 @@ const Restaurant = () => {
     loadMenuItems();
   }, [id]);
 
-  if (loading) return <p>Loading restaurant details...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (!restaurant) return <p>Restaurant not found.</p>;
+  if (loading) return <p className="loading-text">Loading restaurant details...</p>;
+  if (error) return <p className="error-text">Error: {error}</p>;
+  if (!restaurant) return <p className="not-found-text">Restaurant not found.</p>;
 
   return (
-    <div>
-      <h1>{restaurant.name}</h1>
-      <p>{restaurant.description}</p>
-      <p><strong>Location:</strong> {restaurant.location}</p>
-      <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p>
+    <div className="restaurant-container">
+      <div className="restaurant-details">
+        <h1>{restaurant.name}</h1>
+        <p>{restaurant.description}</p>
+        <p><strong>Location:</strong> {restaurant.location}</p>
+        <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p>
+      </div>
 
-      <h2>Menu</h2>
+      <h2 className="menu-heading">Menu</h2>
       {menuItems.length === 0 ? (
-        <p>No menu items available.</p>
+        <p className="no-menu">No menu items available.</p>
       ) : (
-        <ul>
+        <div className="menu-list">
           {menuItems.map((item) => (
-            <li key={item._id}>
+            <div key={item._id} className="menu-card">
               <h3>{item.name}</h3>
-              <p>{item.description}</p>
-              <p><strong>Price:</strong> {item.price} BD</p>
+              <p className="menu-description">{item.description}</p>
+              <p className="menu-price"><strong>Price:</strong> {item.price} BD</p>
 
-              {user && <button onClick={() => addToCart(item)}>Add to Cart</button>}
-            </li>
+              {user && (
+                <button className="add-to-cart-btn" onClick={() => addToCart(item)}>
+                  Add to Cart
+                </button>
+              )}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

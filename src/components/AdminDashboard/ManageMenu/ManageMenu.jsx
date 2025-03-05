@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { fetchMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from "../../../services/menuService";
+import "./ManageMenu.css"; // Make sure to import the CSS file
 
 const ManageMenu = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [menuItems, setMenuItems] = useState([]);
   const [newItem, setNewItem] = useState({
     name: "",
     description: "",
     price: "",
-    category: "", 
+    category: "",
   });
   const [editingItem, setEditingItem] = useState(null);
   const [error, setError] = useState(null);
@@ -81,19 +82,22 @@ const ManageMenu = () => {
   };
 
   return (
-    <div>
-      <h1>Manage Menu</h1>
+    <div className="manage-menu-container">
+      <h1 className="manage-menu-title">Manage Menu</h1>
 
-      {/* Add New Item Form */}
-      <h2>{editingItem ? "Edit Menu Item" : "Add Menu Item"}</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={editingItem ? handleSaveEdit : handleSubmit}>
+      <h2 className="manage-menu-subtitle">
+        {editingItem ? "Edit Menu Item" : "Add Menu Item"}
+      </h2>
+      {error && <p className="error-message">{error}</p>}
+
+      <form onSubmit={editingItem ? handleSaveEdit : handleSubmit} className="menu-form">
         <input
           type="text"
           name="name"
           placeholder="Item Name"
           value={editingItem ? editingItem.name : newItem.name}
           onChange={handleChange}
+          className="input-field"
           required
         />
         <input
@@ -102,6 +106,7 @@ const ManageMenu = () => {
           placeholder="Description"
           value={editingItem ? editingItem.description : newItem.description}
           onChange={handleChange}
+          className="input-field"
         />
         <input
           type="number"
@@ -109,12 +114,14 @@ const ManageMenu = () => {
           placeholder="Price (BD)"
           value={editingItem ? editingItem.price : newItem.price}
           onChange={handleChange}
+          className="input-field"
           required
         />
         <select
           name="category"
           value={editingItem ? editingItem.category : newItem.category}
           onChange={handleChange}
+          className="select-field"
         >
           <option value="">Select Category</option>
           <option value="Appetizers">Appetizers</option>
@@ -122,21 +129,38 @@ const ManageMenu = () => {
           <option value="Desserts">Desserts</option>
           <option value="Drinks">Drinks</option>
         </select>
-        <button type="submit">{editingItem ? "Save Changes" : "Add Item"}</button>
-        {editingItem && <button onClick={() => setEditingItem(null)}>Cancel</button>}
+        <div className="button-group">
+          <button type="submit" className="submit-button">
+            {editingItem ? "Save Changes" : "Add Item"}
+          </button>
+          {editingItem && (
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => setEditingItem(null)}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </form>
 
-      {/* Display Menu Items */}
-      <h2>Current Menu</h2>
+      <h2 className="manage-menu-subtitle">Current Menu</h2>
       {menuItems.length === 0 ? (
         <p>No menu items available.</p>
       ) : (
-        <ul>
+        <ul className="menu-items-list">
           {menuItems.map((item) => (
-            <li key={item._id}>
+            <li key={item._id} className="menu-item">
               <strong>{item.name}</strong> - {item.price} BD
-              <button onClick={() => handleEditClick(item)}>Edit</button>
-              <button onClick={() => handleDelete(item._id)}>Delete</button>
+              <div className="item-actions">
+                <button className="edit-button" onClick={() => handleEditClick(item)}>
+                  Edit
+                </button>
+                <button className="delete-button" onClick={() => handleDelete(item._id)}>
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>

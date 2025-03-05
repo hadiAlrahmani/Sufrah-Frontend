@@ -1,29 +1,40 @@
-
-/* Custom styles for the navbar */
+/* Custom Navbar Styling */
 .navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Add a subtle shadow */
-}
-
-.nav-link {
-    transition: color 0.3s;
-    /* Smooth color transition */
-}
-
-.nav-link:hover {
-    color: #007bff;
-    /* Change color on hover */
-}
-
-.nav-item .disabled {
-    color: #6c757d;
-    /* Disabled link color */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 10px;
-        /* Adjust padding for smaller screens */
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Welcome text styling */
+  .welcome-text {
+    color: #f8f9fa;
+    font-weight: bold;
+    padding-right: 15px;
+  }
+  
+  /* Admin Dashboard link highlight */
+  .admin-link {
+    font-weight: bold;
+    color: #ffc107 !important; /* Yellow color for admin */
+  }
+  
+  /* Signout Button */
+  .signout-btn {
+    color: #dc3545 !important; /* Red color */
+    font-weight: bold;
+  }
+  
+  /* Navbar links hover effect */
+  .navbar-nav .nav-link:hover {
+    color: #f8f9fa !important; /* Light color on hover */
+  }
+  
+  /* Mobile Menu Customizations */
+  @media (max-width: 768px) {
+    .navbar-nav {
+      text-align: center;
     }
-}
+  
+    .nav-item {
+      margin-bottom: 10px;
+    }
+  }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as authService from '../../services/authService';
+import './SigninForm.css'; // Import the CSS file for styling
 
 const SigninForm = (props) => {
   const navigate = useNavigate();
@@ -23,7 +24,6 @@ const SigninForm = (props) => {
     e.preventDefault();
     try {
       const user = await authService.signin(formData);
-      console.log(user);
       props.setUser(user);
       navigate('/');
     } catch (err) {
@@ -32,12 +32,12 @@ const SigninForm = (props) => {
   };
 
   return (
-    <main>
+    <main className="signin-container">
       <h1>Log In</h1>
-      <p>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Username:</label>
+      {message && <p className="error-message">{message}</p>}
+      <form autoComplete="off" onSubmit={handleSubmit} className="signin-form">
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
             autoComplete="off"
@@ -45,9 +45,10 @@ const SigninForm = (props) => {
             value={formData.username}
             name="username"
             onChange={handleChange}
+            className="form-input"
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -56,12 +57,13 @@ const SigninForm = (props) => {
             value={formData.password}
             name="password"
             onChange={handleChange}
+            className="form-input"
           />
         </div>
-        <div>
-          <button>Log In</button>
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">Log In</button>
           <Link to="/">
-            <button>Cancel</button>
+            <button type="button" className="cancel-btn">Cancel</button>
           </Link>
         </div>
       </form>
