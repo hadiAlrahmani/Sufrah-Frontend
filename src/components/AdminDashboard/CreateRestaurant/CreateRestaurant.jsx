@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import { createRestaurant } from "../../../services/restaurantService";
 
 const CreateRestaurant = () => {
   const [formData, setFormData] = useState({
@@ -20,17 +19,7 @@ const CreateRestaurant = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${BACKEND_URL}/restaurants`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) throw new Error("Failed to create restaurant");
-
+      await createRestaurant(formData);
       navigate("/admin");
     } catch (err) {
       console.error("Error creating restaurant:", err);

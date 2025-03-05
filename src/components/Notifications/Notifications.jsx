@@ -1,62 +1,17 @@
 import { useState, useEffect } from "react";
-
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import { fetchNotifications, markAsRead } from "../../services/notificationService";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch notifications
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/notifications`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch notifications");
-        }
-
-        const data = await res.json();
-        setNotifications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNotifications();
+    fetchNotifications(setNotifications, setLoading, setError);
   }, []);
 
-  // Mark notification as read when clicked
-  const markAsRead = async (id) => {
-    try {
-      const res = await fetch(`${BACKEND_URL}/notifications/${id}/read`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to update notification status");
-      }
-
-      // Update state to mark as read
-      setNotifications((prev) =>
-        prev.map((notif) =>
-          notif._id === id ? { ...notif, read: true } : notif
-        )
-      );
-    } catch (err) {
-      console.error("Error marking notification as read:", err);
-    }
+  const handleMarkAsRead = async (id) => {
+    await markAsRead(id, setNotifications);
   };
 
   const clearNotifications = () => {
@@ -73,7 +28,7 @@ const Notifications = () => {
       <button onClick={clearNotifications}>Clear Notifications</button>
       <ul>
         {notifications.map((notif) => (
-          <li key={notif._id} onClick={() => markAsRead(notif._id)}>
+          <li key={notif._id} onClick={() => handleMarkAsRead(notif._id)}>
             {notif.message} {!notif.read && <strong> (New)</strong>}
           </li>
         ))}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import { fetchRestaurants, createMenuItem } from "../../services/menuService";
 
 const CreateMenuItem = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -13,29 +12,23 @@ const CreateMenuItem = () => {
   });
   const [message, setMessage] = useState("");
 
-  // Fetch restaurants
   useEffect(() => {
-    const fetchRestaurants = async () => {
+    const getRestaurants = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/restaurants`);
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.error || "Failed to fetch restaurants");
+        const data = await fetchRestaurants();
         setRestaurants(data);
       } catch (err) {
         setMessage(err.message);
       }
     };
 
-    fetchRestaurants();
+    getRestaurants();
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.category) {
@@ -44,18 +37,7 @@ const CreateMenuItem = () => {
     }
 
     try {
-      const res = await fetch(`${BACKEND_URL}/menuItems`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create menu item");
-
+      await createMenuItem(formData);
       setMessage("Menu item added successfully!");
       setFormData({
         restaurant: "",
@@ -74,7 +56,6 @@ const CreateMenuItem = () => {
       <h1>Create Menu Item</h1>
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
-        {/* Restaurant Selection */}
         <label>Restaurant:</label>
         <select name="restaurant" value={formData.restaurant} onChange={handleChange} required>
           <option value="">Select a restaurant</option>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import { fetchMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from "../../../services/menuService";
 
 const ManageMenu = () => {
   const { id } = useParams(); 
@@ -16,14 +15,12 @@ const ManageMenu = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchMenuItems();
+    loadMenuItems();
   }, []);
 
-  const fetchMenuItems = async () => {
+  const loadMenuItems = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/menuItems/restaurant/${id}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to fetch menu items");
+      const data = await fetchMenuItems(id);
       setMenuItems(data);
     } catch (err) {
       setError(err.message);
@@ -41,26 +38,14 @@ const ManageMenu = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  
     if (!newItem.category) {
       setError("Please select a category.");
       return;
     }
 
     try {
-      const res = await fetch(`${BACKEND_URL}/menuItems`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ ...newItem, restaurant: id }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to add menu item");
-
-      setMenuItems([...menuItems, data]);
+      const addedItem = await addMenuItem(newItem, id);
+      setMenuItems([...menuItems, addedItem]);
       setNewItem({ name: "", description: "", price: "", category: "" });
     } catch (err) {
       setError(err.message);
@@ -78,20 +63,9 @@ const ManageMenu = () => {
     }
 
     try {
-      const res = await fetch(`${BACKEND_URL}/menuItems/${editingItem._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(editingItem),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to update menu item");
-
-      setMenuItems(menuItems.map((item) => (item._id === editingItem._id ? data : item)));
-      setEditingItem(null); // Exit edit mode
+      const updatedItem = await updateMenuItem(editingItem);
+      setMenuItems(menuItems.map((item) => (item._id === updatedItem._id ? updatedItem : item)));
+      setEditingItem(null);
     } catch (err) {
       setError(err.message);
     }
@@ -99,16 +73,7 @@ const ManageMenu = () => {
 
   const handleDelete = async (itemId) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/menuItems/${itemId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("Failed to delete menu item");
-
-      // Update UI
+      await deleteMenuItem(itemId);
       setMenuItems(menuItems.filter((item) => item._id !== itemId));
     } catch (err) {
       setError(err.message);
@@ -121,7 +86,7 @@ const ManageMenu = () => {
 
       {/* Add New Item Form */}
       <h2>{editingItem ? "Edit Menu Item" : "Add Menu Item"}</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>} 
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={editingItem ? handleSaveEdit : handleSubmit}>
         <input
           type="text"
@@ -151,7 +116,7 @@ const ManageMenu = () => {
           value={editingItem ? editingItem.category : newItem.category}
           onChange={handleChange}
         >
-          <option value="">Select Category</option> 
+          <option value="">Select Category</option>
           <option value="Appetizers">Appetizers</option>
           <option value="Main Course">Main Course</option>
           <option value="Desserts">Desserts</option>

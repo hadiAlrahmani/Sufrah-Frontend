@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-
-const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
+import { fetchRestaurantDetails } from "../../services/restaurantService";
+import { fetchMenuItems } from "../../services/menuService";
+import { addToCart } from "../../services/cartService";
+import { AuthedUserContext } from "../../App";
 
 const Restaurant = () => {
   const { id } = useParams();
+  const user = useContext(AuthedUserContext);
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch Restaurant & Menu
   useEffect(() => {
-    const fetchRestaurantDetails = async () => {
+    const loadRestaurantDetails = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/restaurants/${id}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to fetch restaurant details");
+        const data = await fetchRestaurantDetails(id);
         setRestaurant(data);
       } catch (err) {
         setError(err.message);
@@ -25,37 +25,18 @@ const Restaurant = () => {
       }
     };
 
-    const fetchMenuItems = async () => {
+    const loadMenuItems = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/menuItems/restaurant/${id}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to fetch menu items");
+        const data = await fetchMenuItems(id);
         setMenuItems(data);
       } catch (err) {
         setError(err.message);
       }
     };
 
-    fetchRestaurantDetails();
-    fetchMenuItems();
+    loadRestaurantDetails();
+    loadMenuItems();
   }, [id]);
-
-  // Add to Cart Function
-  const addToCart = (item) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Check if item already exists in cart
-    const existingItem = cart.find((cartItem) => cartItem._id === item._id);
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...item, quantity: 1 });
-    }
-
-    // Save to local storage
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${item.name} added to cart!`);
-  };
 
   if (loading) return <p>Loading restaurant details...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -78,7 +59,8 @@ const Restaurant = () => {
               <h3>{item.name}</h3>
               <p>{item.description}</p>
               <p><strong>Price:</strong> {item.price} BD</p>
-              <button onClick={() => addToCart(item)}>Add to Cart</button>
+
+              {user && <button onClick={() => addToCart(item)}>Add to Cart</button>}
             </li>
           ))}
         </ul>
