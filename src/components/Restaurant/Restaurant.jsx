@@ -5,6 +5,8 @@ import { fetchMenuItems } from "../../services/menuService";
 import { addToCart } from "../../services/cartService";
 import { AuthedUserContext } from "../../App";
 import "./Restaurant.css"; // ✅ Import the CSS file
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, Button } from "react-bootstrap";
 
 const Restaurant = () => {
   const { id } = useParams();
@@ -13,6 +15,19 @@ const Restaurant = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // ✅ Bootstrap Modal State
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  // ✅ Show Modal
+  const handleModal = (message) => {
+    setModalMessage(message);
+    setShowModal(true);
+  };
+
+  // ✅ Close Modal
+  const closeModal = () => setShowModal(false);
 
   useEffect(() => {
     const loadRestaurantDetails = async () => {
@@ -39,6 +54,11 @@ const Restaurant = () => {
     loadMenuItems();
   }, [id]);
 
+  // ✅ Updated Add to Cart function (shows modal)
+  const handleAddToCart = (item) => {
+    addToCart(item, handleModal); // Pass handleModal here
+  };
+
   if (loading) return <p className="loading-text">Loading restaurant details...</p>;
   if (error) return <p className="error-text">Error: {error}</p>;
   if (!restaurant) return <p className="not-found-text">Restaurant not found.</p>;
@@ -63,8 +83,9 @@ const Restaurant = () => {
               <p className="menu-description">{item.description}</p>
               <p className="menu-price"><strong>Price:</strong> {item.price} BD</p>
 
-              {user && (
-                <button className="add-to-cart-btn" onClick={() => addToCart(item)}>
+              {/* ✅ Only show "Add to Cart" if user is NOT an admin */}
+              {user && user.role !== "admin" && (
+                <button className="add-to-cart-btn btn btn-primary" onClick={() => handleAddToCart(item)}>
                   Add to Cart
                 </button>
               )}
@@ -72,6 +93,17 @@ const Restaurant = () => {
           ))}
         </div>
       )}
+
+      {/* ✅ Bootstrap Modal */}
+      <Modal show={showModal} onHide={closeModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Notification</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

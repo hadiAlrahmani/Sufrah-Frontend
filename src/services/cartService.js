@@ -7,10 +7,16 @@ const saveCart = (cart) => {
   return cart;
 };
 
-const addToCart = (item) => {
+// Updated addToCart function to accept handleModal
+const addToCart = (item, handleModal) => {
   let cart = getCart();
 
-  // Check if item already exists in cart
+  if (cart.length > 0 && cart[0].restaurant !== item.restaurant) {
+    // Trigger modal to inform the user
+    handleModal(`Your cart contains items from a different restaurant. Adding ${item.name} is not possible. Please clear your current cart first.`);
+    return; // Don't add item immediately
+  }
+
   const existingItem = cart.find((cartItem) => cartItem._id === item._id);
   if (existingItem) {
     existingItem.quantity += 1;
@@ -19,7 +25,8 @@ const addToCart = (item) => {
   }
 
   saveCart(cart);
-  alert(`${item.name} added to cart!`);
+  // Show confirmation message for successful addition
+  handleModal(`${item.name} has been added to your cart!`);
 };
 
 const increaseQuantity = (itemId) => {
@@ -47,13 +54,11 @@ const removeFromCart = (itemId) => {
 
 const checkout = async (cartItems, setCartItems, setTotalPrice) => {
   if (cartItems.length === 0) {
-    alert("Your cart is empty.");
     return;
   }
 
   const token = localStorage.getItem("token");
   if (!token) {
-    alert("You must be logged in to place an order.");
     return;
   }
 
@@ -83,10 +88,9 @@ const checkout = async (cartItems, setCartItems, setTotalPrice) => {
     setCartItems([]);
     setTotalPrice(0);
 
-    alert("Order placed successfully!");
     window.location.href = "/orders";
   } catch (error) {
-    alert(error.message);
+    console.error(error.message);
   }
 };
 

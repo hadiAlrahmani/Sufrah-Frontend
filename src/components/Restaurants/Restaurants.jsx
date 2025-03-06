@@ -38,14 +38,19 @@ const Restaurants = () => {
       <h1 className="title">Available Restaurants</h1>
       <div className="row">
         {restaurants.map((restaurant) => (
-          <div key={restaurant._id} className="col-md-4 col-sm-6">
+          <div key={restaurant._id} className="col-lg-4 col-md-6 col-sm-12 d-flex">
             <div className="restaurant-card">
-              <Link to={`/restaurant/${restaurant._id}`} className="restaurant-link">
-                <h3>{restaurant.name}</h3>
-              </Link>
-              <p>{restaurant.description}</p>
-              <p><strong>Location:</strong> {restaurant.location}</p>
-              <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p>
+              {/* ✅ Display restaurant image */}
+              <img src={restaurant.image} alt={restaurant.name} className="restaurant-image" />
+
+              <div className="restaurant-info">
+                <Link to={`/restaurant/${restaurant._id}`} className="restaurant-link">
+                  <h3>{restaurant.name}</h3>
+                </Link>
+                <p>{restaurant.description}</p>
+                <p><strong>Location:</strong> {restaurant.location}</p>
+                <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p>
+              </div>
             </div>
           </div>
         ))}

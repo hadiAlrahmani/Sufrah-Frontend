@@ -10,6 +10,7 @@ const CreateRestaurant = () => {
     description: "",
     location: "",
     openingHours: "",
+    image: "", // ✅ Added image field
   });
 
   const navigate = useNavigate();
@@ -74,6 +75,19 @@ const CreateRestaurant = () => {
             name="openingHours"
             placeholder="Opening Hours"
             value={formData.openingHours}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        {/* ✅ Image URL Input Field */}
+        <div className="mb-3">
+          <input
+            type="text"
+            name="image"
+            placeholder="Image URL"
+            value={formData.image}
             onChange={handleChange}
             required
             className="form-control"
