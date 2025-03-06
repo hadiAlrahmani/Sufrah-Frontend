@@ -1,46 +1,46 @@
-import { useState, useEffect } from "react";
-import { fetchRestaurants, createMenuItem } from "../../services/menuService";
-import './CreateMenuItem.css';  // Import the CSS file
+import { useState, useEffect } from "react"; // Import hooks for state and lifecycle management
+import { fetchRestaurants, createMenuItem } from "../../services/menuService"; // Import service functions
+import './CreateMenuItem.css'; // Import the CSS file
 
 const CreateMenuItem = () => {
-  const [restaurants, setRestaurants] = useState([]);
-  const [formData, setFormData] = useState({
+  const [restaurants, setRestaurants] = useState([]); // State for storing restaurants
+  const [formData, setFormData] = useState({ // State for form data
     restaurant: "",
     name: "",
     description: "",
     price: "",
     category: "",
   });
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); // State for feedback messages
 
   useEffect(() => {
     const getRestaurants = async () => {
       try {
-        const data = await fetchRestaurants();
-        setRestaurants(data);
+        const data = await fetchRestaurants(); // Fetch restaurants from service
+        setRestaurants(data); // Update state with fetched restaurants
       } catch (err) {
-        setMessage(err.message);
+        setMessage(err.message); // Set error message if fetching fails
       }
     };
 
-    getRestaurants();
-  }, []);
+    getRestaurants(); // Call the function to fetch restaurants
+  }, []); // Run only on component mount
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Update the specific field in formData
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.category) {
+  const handleSubmit = async (e) => { // Handle form submission
+    e.preventDefault(); // Prevent default form submission behavior
+    if (!formData.category) { // Validate category selection
       setMessage("Please select a category.");
       return;
     }
 
     try {
-      await createMenuItem(formData);
-      setMessage("Menu item added successfully!");
-      setFormData({
+      await createMenuItem(formData); // Create new menu item
+      setMessage("Menu item added successfully!"); // Set success message
+      setFormData({ // Reset form data
         restaurant: "",
         name: "",
         description: "",
@@ -48,25 +48,25 @@ const CreateMenuItem = () => {
         category: "",
       });
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message); // Set error message if creation fails
     }
   };
 
   return (
     <div className="create-menu-item-container">
       <h1 className="create-menu-header">Create Menu Item</h1>
-      {message && <p className="message">{message}</p>}
-      <form onSubmit={handleSubmit} className="menu-form">
+      {message && <p className="message">{message}</p>} {/* Display feedback message */}
+      <form onSubmit={handleSubmit} className="menu-form"> {/* Form for creating menu item */}
         <label>Restaurant:</label>
         <select
           name="restaurant"
-          value={formData.restaurant}
-          onChange={handleChange}
+          value={formData.restaurant} // Bind select value to state
+          onChange={handleChange} // Handle select change
           required
           className="input-field"
         >
           <option value="">Select a restaurant</option>
-          {restaurants.map((rest) => (
+          {restaurants.map((rest) => ( // Map through restaurants for options
             <option key={rest._id} value={rest._id}>
               {rest.name}
             </option>
@@ -77,8 +77,8 @@ const CreateMenuItem = () => {
         <input
           type="text"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
+          value={formData.name} // Bind input value to state
+          onChange={handleChange} // Handle input change
           required
           className="input-field"
         />
@@ -87,8 +87,8 @@ const CreateMenuItem = () => {
         <input
           type="text"
           name="description"
-          value={formData.description}
-          onChange={handleChange}
+          value={formData.description} // Bind input value to state
+          onChange={handleChange} // Handle input change
           className="input-field"
         />
 
@@ -96,8 +96,8 @@ const CreateMenuItem = () => {
         <input
           type="number"
           name="price"
-          value={formData.price}
-          onChange={handleChange}
+          value={formData.price} // Bind input value to state
+          onChange={handleChange} // Handle input change
           required
           className="input-field"
         />
@@ -105,8 +105,8 @@ const CreateMenuItem = () => {
         <label>Category:</label>
         <select
           name="category"
-          value={formData.category}
-          onChange={handleChange}
+          value={formData.category} // Bind select value to state
+          onChange={handleChange} // Handle select change
           required
           className="input-field"
         >
@@ -117,10 +117,10 @@ const CreateMenuItem = () => {
           <option value="Drinks">Drinks</option>
         </select>
 
-        <button type="submit" className="submit-btn">Add Menu Item</button>
+        <button type="submit" className="submit-btn">Add Menu Item</button> {/* Submit button */}
       </form>
     </div>
   );
 };
 
-export default CreateMenuItem;
+export default CreateMenuItem; // Export the CreateMenuItem component
