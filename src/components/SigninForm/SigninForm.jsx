@@ -1,33 +1,36 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as authService from "../../services/authService";
+import * as authService from "../../services/authService"; // Import authentication service
 import "./SigninForm.css"; // Import the CSS file for styling
 
 const SigninForm = (props) => {
-  const navigate = useNavigate();
-  const [message, setMessage] = useState([""]);
+  const navigate = useNavigate(); // Hook to programmatically navigate
+  const [message, setMessage] = useState([""]); // State for feedback messages
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    username: "", // State for username
+    password: "", // State for password
   });
 
+  // Update the message state
   const updateMessage = (msg) => {
     setMessage(msg);
   };
 
+  // Handle input changes
   const handleChange = (e) => {
-    updateMessage("");
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    updateMessage(""); // Clear any previous messages
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form data
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
     try {
-      const user = await authService.signin(formData);
-      props.setUser(user);
-      navigate("/");
+      const user = await authService.signin(formData); // Call signin service
+      props.setUser(user); // Set the user in the parent component
+      navigate("/"); // Navigate to home page after successful login
     } catch (err) {
-      updateMessage(err.message);
+      updateMessage(err.message); // Update message on error
     }
   };
 
@@ -39,7 +42,7 @@ const SigninForm = (props) => {
       >
         <h1 className="text-center mb-4">Log In</h1>
         {message && (
-          <p className="error-message text-danger text-center">{message}</p>
+          <p className="error-message text-danger text-center">{message}</p> // Display error message
         )}
         <form autoComplete="off" onSubmit={handleSubmit}>
           <div className="form-group mb-3">
@@ -65,7 +68,7 @@ const SigninForm = (props) => {
               id="username"
               value={formData.username}
               name="username"
-              onChange={handleChange}
+              onChange={handleChange} // Update username on change
               className="form-control"
             />
           </div>
@@ -92,7 +95,7 @@ const SigninForm = (props) => {
               id="password"
               value={formData.password}
               name="password"
-              onChange={handleChange}
+              onChange={handleChange} // Update password on change
               className="form-control"
             />
           </div>
@@ -110,4 +113,4 @@ const SigninForm = (props) => {
   );
 };
 
-export default SigninForm;
+export default SigninForm; // Export the SigninForm component

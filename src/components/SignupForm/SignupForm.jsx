@@ -1,40 +1,44 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as authService from "../../services/authService";
-import "./SignupForm.css"; 
+import * as authService from "../../services/authService"; // Import authentication service
+import "./SignupForm.css"; // Import CSS for styling
 
 const SignupForm = (props) => {
-  const navigate = useNavigate();
-  const [message, setMessage] = useState([""]);
+  const navigate = useNavigate(); // Hook to programmatically navigate
+  const [message, setMessage] = useState([""]); // State for feedback messages
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    passwordConf: "",
+    username: "", // State for username
+    password: "", // State for password
+    passwordConf: "", // State for password confirmation
   });
 
+  // Update the message state
   const updateMessage = (msg) => {
     setMessage(msg);
   };
 
+  // Handle input changes
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form data
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
     try {
-      const newUserResponse = await authService.signup(formData);
-      props.setUser(newUserResponse.user);
-      navigate("/");
+      const newUserResponse = await authService.signup(formData); // Call signup service
+      props.setUser(newUserResponse.user); // Set the user in the parent component
+      navigate("/"); // Navigate to home page after successful signup
     } catch (err) {
-      updateMessage(err.message);
+      updateMessage(err.message); // Update message on error
     }
   };
 
-  const { username, password, passwordConf } = formData;
+  const { username, password, passwordConf } = formData; // Destructure form data
 
+  // Validate the form
   const isFormInvalid = () => {
-    return !(username && password && password === passwordConf);
+    return !(username && password && password === passwordConf); // Check for valid input
   };
 
   return (
@@ -45,7 +49,7 @@ const SignupForm = (props) => {
       >
         <h1 className="text-center mb-4">Sign Up</h1>
         {message && (
-          <p className="error-message text-danger text-center">{message}</p>
+          <p className="error-message text-danger text-center">{message}</p> // Display error message
         )}
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
@@ -70,7 +74,7 @@ const SignupForm = (props) => {
               id="username"
               value={username}
               name="username"
-              onChange={handleChange}
+              onChange={handleChange} // Update username on change
               className="form-control"
             />
           </div>
@@ -96,7 +100,7 @@ const SignupForm = (props) => {
               id="password"
               value={password}
               name="password"
-              onChange={handleChange}
+              onChange={handleChange} // Update password on change
               className="form-control"
             />
           </div>
@@ -122,14 +126,14 @@ const SignupForm = (props) => {
               id="confirm"
               value={passwordConf}
               name="passwordConf"
-              onChange={handleChange}
+              onChange={handleChange} // Update password confirmation on change
               className="form-control"
             />
           </div>
           <div className="form-actions d-flex justify-content-between gap-2">
             <button
               type="submit"
-              disabled={isFormInvalid()}
+              disabled={isFormInvalid()} // Disable button if form is invalid
               className="btn btn-primary flex-grow-1"
             >
               Sign Up
@@ -144,4 +148,4 @@ const SignupForm = (props) => {
   );
 };
 
-export default SignupForm;
+export default SignupForm; // Export the SignupForm component
