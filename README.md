@@ -1,5 +1,14 @@
 # 🍽️ Sufrah - Restaurant Ordering App
 
+---
+
+## Logo
+
+![Sufra Logo 2](https://github.com/user-attachments/assets/ca1bf922-89eb-4f91-8430-e4d3df45e033)
+
+<img width="609" alt="Screenshot 2025-03-11 at 8 36 45 AM" src="https://github.com/user-attachments/assets/0e444e90-42b9-4edd-95f3-a27e3dc1f58f" />
+
+
 ## Image Overview
 <img width="1728" alt="Screenshot 2025-03-06 at 10 34 36 AM" src="https://github.com/user-attachments/assets/5937b1d9-244a-4a0f-8a84-226f56c4df7d" />
 <img width="1728" alt="Screenshot 2025-03-06 at 10 34 21 AM" src="https://github.com/user-attachments/assets/79de2bb3-be38-4ee7-898c-63def4c9f243" />
@@ -51,13 +60,7 @@ Sufrah is a user-friendly restaurant ordering app designed to simplify the proce
 - **Back-End**: Express.js, JavaScript, Mongoose
 - **Database**: MongoDB
 - **Authentication & Security**: JWT, bcrypt.js
----
-
-## Screenshot/Logo
-
-![Sufrah Logo/Screenshot]
-
-
+  
 ---
 
 ## Next Steps (Future Plans)
