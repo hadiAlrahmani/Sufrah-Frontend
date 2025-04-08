@@ -9,14 +9,13 @@ const saveCart = (cart) => {
   return cart; // Return the saved cart
 };
 
-// Add an item to the cart with a modal handler for notifications
 const addToCart = (item, handleModal) => {
   let cart = getCart(); // Get current cart
 
   // Check if the cart has items from a different restaurant
   if (cart.length > 0 && cart[0].restaurant !== item.restaurant) {
     handleModal(`Your cart contains items from a different restaurant. Adding ${item.name} is not possible. Please clear your current cart first.`);
-    return; // Do not add item if restaurant differs
+    return; 
   }
 
   // Check if item already exists in the cart
