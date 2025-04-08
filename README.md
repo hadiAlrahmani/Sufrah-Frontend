@@ -31,9 +31,9 @@ Sufrah is a user-friendly restaurant ordering app designed to simplify the proce
 
 ## Getting Started
 
-- **Deployed App**: [Sufrah Live App]
-- **Planning Materials**: [Trello]
-- **Back-End Repository**: [GitHub Back-End Repo]
+- **Deployed App**: [Sufrah Live App](https://sufrah-frontend-gd87g7xro-hadis-projects-054999ec.vercel.app/)
+- **Planning Materials**: [Trello](https://trello.com/b/xtWLtycX/sufrah)
+- **Back-End Repository**: [GitHub Back-End Repo](https://github.com/hadiAlrahmani/Sufrah-Backend)
 
 ---
 
