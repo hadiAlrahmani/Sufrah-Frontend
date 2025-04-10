@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // Import hooks for state and lifecycle management
+import { useEffect, useState } from "react"; // Import hooks for state and side effects
 import { Link } from "react-router-dom"; // Import Link for navigation
 import {
   fetchAdminRestaurants,
@@ -18,7 +18,7 @@ const AdminDashboard = () => {
       setOrders(fetchedOrders); // Update orders state
     };
 
-    loadData(); // Call loadData function
+    loadData(); // Call loadData function to fetch data on mount
   }, []); // Run only on component mount
 
   return (
@@ -40,12 +40,22 @@ const AdminDashboard = () => {
               <h3 className="admin-dashboard__restaurant-name mb-0">
                 {restaurant.name} {/* Display restaurant name */}
               </h3>
-              <Link
-                className="btn btn-primary admin-dashboard__link"
-                to={`/admin/restaurant/${restaurant._id}/menu`}
-              >
-                Manage Menu {/* Link to manage restaurant menu */}
-              </Link>
+              <div className="d-flex">
+                <Link
+                  className="btn btn-primary admin-dashboard__link mr-2"
+                  to={`/admin/restaurant/${restaurant._id}/menu`}
+                >
+                  Manage Menu {/* Link to manage restaurant menu */}
+                </Link>
+
+                {/* Add an "Edit" button for each restaurant */}
+                <Link
+                  className="btn btn-secondary admin-dashboard__link"
+                  to={`/admin/restaurant/${restaurant._id}/edit`}
+                >
+                  Edit Restaurant {/* Link to edit restaurant */}
+                </Link>
+              </div>
             </li>
           ))}
         </ul>

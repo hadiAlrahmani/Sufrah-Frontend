@@ -4,16 +4,17 @@ import { Routes, Route, Navigate } from 'react-router-dom'; // Import routing co
 // Components
 import NavBar from './components/NavBar/NavBar'; // Import NavBar component
 import Restaurants from './components/Restaurants/Restaurants'; // Import Restaurants component
-import Restaurant from "./components/Restaurant/Restaurant"; // Import single Restaurant component
+import Restaurant from './components/Restaurant/Restaurant'; // Import single Restaurant component
 import Cart from './components/Cart/Cart'; // Import Cart component
 import Orders from './components/Orders/Orders'; // Import Orders component
 import Notifications from './components/Notifications/Notifications'; // Import Notifications component
 import SignupForm from './components/SignupForm/SignupForm'; // Import SignupForm component
 import SigninForm from './components/SigninForm/SigninForm'; // Import SigninForm component
-import AdminDashboard from "./components/AdminDashboard/AdminDashboard"; // Import AdminDashboard component
-import CreateRestaurant from "./components/AdminDashboard/CreateRestaurant/CreateRestaurant"; // Import CreateRestaurant component
-import ManageOrders from "./components/AdminDashboard/ManageOrders/ManageOrders"; // Import ManageOrders component
-import ManageMenu from "./components/AdminDashboard/ManageMenu/ManageMenu"; // Import ManageMenu component
+import AdminDashboard from './components/AdminDashboard/AdminDashboard'; // Import AdminDashboard component
+import CreateRestaurant from './components/AdminDashboard/CreateRestaurant/CreateRestaurant'; // Import CreateRestaurant component
+import ManageOrders from './components/AdminDashboard/ManageOrders/ManageOrders'; // Import ManageOrders component
+import ManageMenu from './components/AdminDashboard/ManageMenu/ManageMenu'; // Import ManageMenu component
+import EditRestaurant from './components/AdminDashboard/EditRestaurant/EditRestaurant'; // Import EditRestaurant component
 
 // Services
 import * as authService from './services/authService'; // Import authentication service
@@ -32,7 +33,7 @@ const App = () => {
   return (
     <>
       <AuthedUserContext.Provider value={user}> {/* Provide user context */}
-        <NavBar user={user} handleSignout={handleSignout} /> {/* Render NavBar with user info */}
+        <NavBar handleSignout={handleSignout} /> {/* Render NavBar with signout */}
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Restaurants />} /> {/* Main restaurant listing */}
@@ -52,6 +53,8 @@ const App = () => {
                   <Route path="/admin/create-restaurant" element={<CreateRestaurant />} /> {/* Create restaurant page */}
                   <Route path="/admin/order/:id" element={<ManageOrders />} /> {/* Manage orders page */}
                   <Route path="/admin/restaurant/:id/menu" element={<ManageMenu />} /> {/* Manage menu page */}
+                  <Route path="/admin/edit-restaurant" element={<EditRestaurant />} /> {/* Edit restaurant page */}
+                  <Route path="/admin/restaurant/:id/edit" element={<EditRestaurant />} />
                 </>
               )}
             </>

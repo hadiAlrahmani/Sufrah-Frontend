@@ -47,4 +47,23 @@ const createRestaurant = async (formData) => {
   }
 };
 
-export { fetchRestaurantDetails, fetchAdminRestaurants, createRestaurant }; // Export functions for use in other modules
+// Update an existing restaurant by ID
+const updateRestaurant = async (id, formData) => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/restaurants/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) throw new Error("Failed to update restaurant");
+    return await res.json();
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export { fetchRestaurantDetails, fetchAdminRestaurants, createRestaurant, updateRestaurant }; // Export functions for use in other modules
