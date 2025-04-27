@@ -36,6 +36,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: 0; /* Initially hidden for animation */
+  animation: fadeIn 1s ease-out forwards; /* Fade-in animation */
 }
 
 /* Added fixed height for even card sizes */
@@ -69,4 +71,16 @@ body {
 
 .restaurant-link:hover {
   color: #0056b3;
+}
+
+/* FadeIn animation for the restaurant cards */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

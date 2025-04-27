@@ -9,6 +9,15 @@ const Restaurants = () => {
   const [loading, setLoading] = useState(true); // State to manage loading status
   const [error, setError] = useState(null); // State to manage error messages
 
+  // Function to shuffle an array (Fisher-Yates shuffle)
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  };
+
   useEffect(() => {
     const fetchRestaurants = async () => { // Async function to fetch restaurants data
       try {
@@ -19,7 +28,8 @@ const Restaurants = () => {
           throw new Error(data.error || "Failed to fetch restaurants"); // Throw error if fetching fails
         }
 
-        setRestaurants(data); // Update state with fetched restaurant data
+        // Shuffle the restaurant data here
+        setRestaurants(shuffleArray(data)); // Update state with shuffled restaurant data
       } catch (err) {
         setError(err.message); // Set error message in state if an error occurs
       } finally {

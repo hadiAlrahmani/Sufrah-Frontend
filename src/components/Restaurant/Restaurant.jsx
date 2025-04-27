@@ -1,89 +1,139 @@
-import { useState, useEffect, useContext } from "react"; // Import hooks for state and lifecycle management
-import { useParams } from "react-router-dom"; // Import useParams for URL parameters
-import { fetchRestaurantDetails } from "../../services/restaurantService"; // Import function to fetch restaurant details
-import { fetchMenuItems } from "../../services/menuService"; // Import function to fetch menu items
-import { addToCart } from "../../services/cartService"; // Import function to add items to cart
-import { AuthedUserContext } from "../../App"; // Import context for authenticated user
-import "./Restaurant.css"; // Import the CSS file for styling
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import { Modal, Button } from "react-bootstrap"; // Import Bootstrap Modal and Button
+import { useState, useEffect, useContext } from "react"; 
+import { useParams } from "react-router-dom"; 
+import { fetchRestaurantDetails } from "../../services/restaurantService"; 
+import { fetchMenuItems } from "../../services/menuService"; 
+import { addToCart } from "../../services/cartService"; 
+import { AuthedUserContext } from "../../App"; 
+import "./Restaurant.css"; 
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import { Modal, Button } from "react-bootstrap"; 
 
 const Restaurant = () => {
-  const { id } = useParams(); // Get restaurant ID from URL
-  const user = useContext(AuthedUserContext); // Get authenticated user from context
-  const [restaurant, setRestaurant] = useState(null); // State for restaurant details
-  const [menuItems, setMenuItems] = useState([]); // State for menu items
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(null); // State for error messages
+  const { id } = useParams(); 
+  const user = useContext(AuthedUserContext); 
+  const [restaurant, setRestaurant] = useState(null); 
+  const [menuItems, setMenuItems] = useState([]); 
+  const [filteredMenuItems, setFilteredMenuItems] = useState([]); 
+  const [categories] = useState(['Appetizers', 'Main Course', 'Desserts', 'Drinks']); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
   // Bootstrap Modal State
-  const [showModal, setShowModal] = useState(false); // State for modal visibility
-  const [modalMessage, setModalMessage] = useState(""); // State for modal message
+  const [showModal, setShowModal] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(""); 
 
-  // Show Modal
   const handleModal = (message) => {
-    setModalMessage(message); // Set message for modal
-    setShowModal(true); // Show modal
+    setModalMessage(message); 
+    setShowModal(true); 
   };
 
-  // Close Modal
-  const closeModal = () => setShowModal(false); // Hide modal
+  const closeModal = () => setShowModal(false); 
 
   useEffect(() => {
     const loadRestaurantDetails = async () => {
       try {
-        const data = await fetchRestaurantDetails(id); // Fetch restaurant details
-        setRestaurant(data); // Set restaurant state
+        const data = await fetchRestaurantDetails(id); 
+        setRestaurant(data); 
       } catch (err) {
-        setError(err.message); // Set error message on failure
+        setError(err.message); 
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false); 
       }
     };
 
     const loadMenuItems = async () => {
       try {
-        const data = await fetchMenuItems(id); // Fetch menu items
-        setMenuItems(data); // Set menu items state
+        const data = await fetchMenuItems(id); 
+        setMenuItems(data); 
+        setFilteredMenuItems(data); 
       } catch (err) {
-        setError(err.message); // Set error message on failure
+        setError(err.message); 
       }
     };
 
-    loadRestaurantDetails(); // Load restaurant details
-    loadMenuItems(); // Load menu items
-  }, [id]); // Run when ID changes
+    loadRestaurantDetails(); 
+    loadMenuItems(); 
+  }, [id]); 
 
-  // Updated Add to Cart function (shows modal)
-  const handleAddToCart = (item) => {
-    addToCart(item, handleModal); // Add item to cart and show modal
+  const handleCategoryClick = (category) => {
+    if (category === "All") {
+      setFilteredMenuItems(menuItems); 
+    } else {
+      const filtered = menuItems.filter((item) => item.category === category); 
+      setFilteredMenuItems(filtered); 
+    }
   };
 
-  if (loading) return <p className="loading-text">Loading restaurant details...</p>; // Render loading state
-  if (error) return <p className="error-text">Error: {error}</p>; // Render error state
-  if (!restaurant) return <p className="not-found-text">Restaurant not found.</p>; // Render not found state
+  const handleSort = (option) => {
+    let sortedMenuItems = [...filteredMenuItems];
+    
+    if (option === "priceLowToHigh") {
+      sortedMenuItems.sort((a, b) => a.price - b.price);
+    } else if (option === "priceHighToLow") {
+      sortedMenuItems.sort((a, b) => b.price - a.price);
+    } else if (option === "nameAtoZ") {
+      sortedMenuItems.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (option === "nameZtoA") {
+      sortedMenuItems.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    setFilteredMenuItems(sortedMenuItems);
+  };
+
+  const handleAddToCart = (item) => {
+    addToCart(item, handleModal); 
+  };
+
+  if (loading) return <p className="loading-text">Loading restaurant details...</p>; 
+  if (error) return <p className="error-text">Error: {error}</p>; 
+  if (!restaurant) return <p className="not-found-text">Restaurant not found.</p>; 
 
   return (
     <div className="restaurant-container">
       <div className="restaurant-details">
-        <h1>{restaurant.name}</h1> {/* Restaurant name */}
-        <p>{restaurant.description}</p> {/* Restaurant description */}
-        <p><strong>Location:</strong> {restaurant.location}</p> {/* Restaurant location */}
-        <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p> {/* Restaurant opening hours */}
+        <h1>{restaurant.name}</h1>
+        <p>{restaurant.description}</p>
+        <p><strong>Location:</strong> {restaurant.location}</p>
+        <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p>
+      </div>
+
+      <div className="category-filters">
+        <button
+          className="category-btn"
+          onClick={() => handleCategoryClick("All")}
+        >
+          All
+        </button>
+        {categories.map((category) => (
+          <button
+            key={category}
+            className="category-btn"
+            onClick={() => handleCategoryClick(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* Sorting Buttons */}
+      <div className="sorting-options">
+        <button onClick={() => handleSort('priceLowToHigh')}>Price: Low to High</button>
+        <button onClick={() => handleSort('priceHighToLow')}>Price: High to Low</button>
+        <button onClick={() => handleSort('nameAtoZ')}>Name: A-Z</button>
+        <button onClick={() => handleSort('nameZtoA')}>Name: Z-A</button>
       </div>
 
       <h2 className="menu-heading">Menu</h2>
-      {menuItems.length === 0 ? (
-        <p className="no-menu">No menu items available.</p> // Render if no menu items
+      {filteredMenuItems.length === 0 ? (
+        <p className="no-menu">No menu items available.</p>
       ) : (
         <div className="menu-list">
-          {menuItems.map((item) => (
+          {filteredMenuItems.map((item) => (
             <div key={item._id} className="menu-card">
-              <h3>{item.name}</h3> {/* Menu item name */}
-              <p className="menu-description">{item.description}</p> {/* Menu item description */}
-              <p className="menu-price"><strong>Price:</strong> {item.price} BD</p> {/* Menu item price */}
+              <h3>{item.name}</h3>
+              <p className="menu-description">{item.description}</p>
+              <p className="menu-price"><strong>Price:</strong> {item.price} BD</p>
 
-              {/* Only show "Add to Cart" if user is NOT an admin */}
               {user && user.role !== "admin" && (
                 <button className="add-to-cart-btn btn btn-primary" onClick={() => handleAddToCart(item)}>
                   Add to Cart
@@ -94,18 +144,17 @@ const Restaurant = () => {
         </div>
       )}
 
-      {/* Bootstrap Modal */}
       <Modal show={showModal} onHide={closeModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Notification</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{modalMessage}</Modal.Body> {/* Modal message */}
+        <Modal.Body>{modalMessage}</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>Close</Button> {/* Close button */}
+          <Button variant="secondary" onClick={closeModal}>Close</Button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 };
 
-export default Restaurant; // Export the Restaurant component
+export default Restaurant;
