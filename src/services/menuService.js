@@ -24,6 +24,18 @@ const fetchMenuItems = async (restaurantId) => {
   }
 };
 
+// Fetch a single menu item by its ID
+const fetchMenuItemById = async (itemId) => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/menuItems/${itemId}`); // Send GET request to fetch menu item by ID
+    const data = await res.json(); // Parse response JSON
+    if (!res.ok) throw new Error(data.error || "Failed to fetch menu item"); // Check for errors
+    return data; // Return fetched menu item
+  } catch (err) {
+    throw new Error(err.message); // Handle errors
+  }
+};
+
 // Add a new menu item to a restaurant
 const addMenuItem = async (newItem, restaurantId) => {
   try {
@@ -80,4 +92,4 @@ const deleteMenuItem = async (itemId) => {
   }
 };
 
-export { fetchRestaurants, fetchMenuItems, addMenuItem, updateMenuItem, deleteMenuItem }; // Export functions for use in other modules
+export { fetchRestaurants, fetchMenuItems, addMenuItem, updateMenuItem, deleteMenuItem, fetchMenuItemById }; // Export functions for use in other modules

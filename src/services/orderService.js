@@ -30,8 +30,14 @@ const fetchUserOrders = async (setOrders, setLoading, setError) => {
 // Fetch a specific order by ID
 const fetchOrderById = async (orderId) => {
   try {
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
+    if (!token) {
+      console.error("No token found");
+      return null; // Exit early if no token
+    }
+
     const res = await fetch(`${BACKEND_URL}/orders/${orderId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Include authorization token
+      headers: { Authorization: `Bearer ${token}` }, // Include authorization token
     });
 
     if (!res.ok) throw new Error("Failed to fetch order"); // Check for errors
@@ -46,11 +52,17 @@ const fetchOrderById = async (orderId) => {
 // Update the status of an order
 const updateOrderStatus = async (orderId, status) => {
   try {
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
+    if (!token) {
+      console.error("No token found");
+      return null; // Exit early if no token
+    }
+
     const res = await fetch(`${BACKEND_URL}/orders/${orderId}`, {
       method: "PUT", // Set request method to PUT
       headers: {
         "Content-Type": "application/json", // Set content type to JSON
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // Include authorization token
+        Authorization: `Bearer ${token}`, // Include authorization token
       },
       body: JSON.stringify({ status }), // Send updated status as JSON
     });
@@ -64,4 +76,33 @@ const updateOrderStatus = async (orderId, status) => {
   }
 };
 
-export { fetchUserOrders, fetchOrderById, updateOrderStatus }; // Export functions for use in other modules
+// Fetch orders for a specific restaurant by ID
+const fetchRestaurantOrders = async (restaurantId) => {
+  try {
+    const token = localStorage.getItem("token"); // Retrieve token from local storage
+    if (!token) {
+      console.error("No token found");
+      return []; // Exit early if no token, return empty array
+    }
+
+    const response = await fetch(`${BACKEND_URL}/orders/restaurant/${restaurantId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch orders for this restaurant');
+    }
+
+    const data = await response.json();
+    return data; // returns array
+  } catch (err) {
+    console.error("Error fetching restaurant orders:", err);
+    return []; // fallback to empty array instead of null
+  }
+};
+
+export { fetchUserOrders, fetchOrderById, updateOrderStatus, fetchRestaurantOrders };
