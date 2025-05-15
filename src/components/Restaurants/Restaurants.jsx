@@ -54,7 +54,7 @@ const Restaurants = () => {
               <Link to={`/restaurant/${restaurant._id}`} className="restaurant-link"> {/* Link to the restaurant's detail page */}
                 <h3 className="restaurant-name">{restaurant.name}</h3> {/* Restaurant name */}
               </Link>
-              <p className="restaurant-description">{restaurant.description}</p> {/* Restaurant description */}
+              {/* <p className="restaurant-description">{restaurant.description}</p> Restaurant description */}
               <p><strong>Location:</strong> {restaurant.location}</p> {/* Restaurant location */}
               <p><strong>Opening Hours:</strong> {restaurant.openingHours}</p> {/* Restaurant opening hours */}
             </div>

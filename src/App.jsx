@@ -16,6 +16,7 @@ import ManageOrders from './components/AdminDashboard/ManageOrders/ManageOrders'
 import ManageMenu from './components/AdminDashboard/ManageMenu/ManageMenu'; // Import ManageMenu component
 import EditRestaurant from './components/AdminDashboard/EditRestaurant/EditRestaurant'; // Import EditRestaurant component
 import RestaurantOrders from './components/AdminDashboard/RestaurantOrders/RestaurantOrders';
+import RestaurantStatistics from './components/AdminDashboard/RestaurantStatistics/RestaurantStatistics'; // Import RestaurantStatistics component
 
 // Services
 import * as authService from './services/authService'; // Import authentication service
@@ -57,6 +58,7 @@ const App = () => {
                   <Route path="/admin/edit-restaurant" element={<EditRestaurant />} /> {/* Edit restaurant page */}
                   <Route path="/admin/restaurant/:id/edit" element={<EditRestaurant />} />
                   <Route path="/admin/orders/:id" element={<RestaurantOrders />} />
+                  <Route path="/admin/restaurant/:id/statistics" element={<RestaurantStatistics />} />
                 </>
               )}
             </>

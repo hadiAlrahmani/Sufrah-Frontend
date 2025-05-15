@@ -98,6 +98,28 @@
   text-align: center;
 }
 
+.admin-dashboard__statistics-btn {
+  padding: 10px 20px;
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 10px;
+}
+
+.admin-dashboard__statistics-btn:hover {
+  background-color: #e67e22;
+  transform: translateY(-2px);
+}
+
+.admin-dashboard__statistics-btn:active {
+  transform: translateY(0);
+}
+
 @media (max-width: 768px) {
   .admin-dashboard {
     padding: 20px;
@@ -126,5 +148,10 @@
 
   .admin-dashboard__no-data {
     font-size: 1rem;
+  }
+
+  .admin-dashboard__statistics-btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
 }
