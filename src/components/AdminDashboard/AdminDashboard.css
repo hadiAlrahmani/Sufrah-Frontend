@@ -73,7 +73,7 @@
 }
 
 .admin-dashboard__link {
-  color: #3498db;
+  color: white;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -154,4 +154,43 @@
     font-size: 0.9rem;
     padding: 8px 16px;
   }
+}
+
+.admin-dashboard__btn-indigo {
+  background-color: #4F46E5;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+.admin-dashboard__btn-indigo:hover {
+  background-color: #4338CA;
+}
+
+.admin-dashboard__btn-amber {
+  background-color: #F59E0B;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+.admin-dashboard__btn-amber:hover {
+  background-color: #D97706;
+}
+
+.admin-dashboard__btn-emerald {
+  background-color: #10B981;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+.admin-dashboard__btn-emerald:hover {
+  background-color: #059669;
 }

@@ -42,21 +42,21 @@ const AdminDashboard = () => {
               </h3>
               <div className="d-flex">
                 <Link
-                  className="btn btn-primary admin-dashboard__link mr-2"
+                  className="admin-dashboard__btn-indigo mr-2"
                   to={`/admin/restaurant/${restaurant._id}/menu`}
                 >
                   Manage Menu
                 </Link>
 
                 <Link
-                  className="btn btn-secondary admin-dashboard__link mr-2"
+                  className="admin-dashboard__btn-amber mr-2"
                   to={`/admin/restaurant/${restaurant._id}/edit`}
                 >
                   Edit Restaurant
                 </Link>
 
                 <Link
-                  className="btn btn-success admin-dashboard__link mr-2"
+                  className="admin-dashboard__btn-emerald mr-2"
                   to={`/admin/orders/${restaurant._id}`}
                 >
                   View Orders
