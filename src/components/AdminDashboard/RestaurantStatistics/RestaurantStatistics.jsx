@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
 
 const RestaurantStatistics = ({ restaurantId }) => {
   const [stats, setStats] = useState({ today: 0, yesterday: 0 });
@@ -8,13 +17,18 @@ const RestaurantStatistics = ({ restaurantId }) => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/statistics/${restaurantId}`);
-        
-        // Check if response is OK and JSON
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(`http://localhost:3000/statistics/order-statistics/${restaurantId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         if (!response.ok) {
           throw new Error('Failed to fetch statistics');
         }
-        
+
         const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
@@ -24,7 +38,7 @@ const RestaurantStatistics = ({ restaurantId }) => {
         }
       } catch (error) {
         console.error('Failed to fetch statistics:', error);
-        setError(error.message); // Set the error message to state
+        setError(error.message);
       }
     };
 
@@ -38,7 +52,7 @@ const RestaurantStatistics = ({ restaurantId }) => {
 
   return (
     <div style={{ width: '100%', maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>} {/* Display error message */}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
