@@ -12,7 +12,8 @@ const Orders = () => {
   // Modal State
   const [showModal, setShowModal] = useState(false); // State for modal visibility
   const [selectedOrder, setSelectedOrder] = useState(null); // State for the currently selected order
-
+//! Fetch Orders
+// When the user visits the Orders page, this useEffect runs automatically and calls a service to fetch their latest orders from the backend. It keeps the data up to date every time they open this page.
   useEffect(() => {
     fetchUserOrders(setOrders, setLoading, setError); // Fetch user orders on component mount
   }, []);
@@ -46,6 +47,7 @@ const Orders = () => {
             <h3 className="order-restaurant">
               Order from {order.restaurant?.name || "Unknown Restaurant"}
             </h3>
+            {/* Each order displays its current status — like ‘cooking’, ‘ready’, or ‘rejected’. This data is updated in real-time from the backend whenever the admin changes the status. */}
             <p className="order-status"><strong>Status:</strong> {order.status}</p>
             <p className="order-total">
               <strong>Total Price:</strong> {order.totalPrice ? order.totalPrice.toFixed(3) : "0.000"} BD
@@ -55,6 +57,7 @@ const Orders = () => {
       </ul>
 
       {/* Bootstrap Modal for Order Details */}
+      {/* If the user wants more details, they can click any order. It opens a modal showing which restaurant the order came from, its items, quantities, and current status — all fetched from the backend. */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header>
           <Modal.Title>Order Details</Modal.Title>

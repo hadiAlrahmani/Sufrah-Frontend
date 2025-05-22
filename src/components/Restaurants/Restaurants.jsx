@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"; // Import hooks for managing state and side effects
 import { Link } from "react-router-dom"; // Import Link component for navigation
-import "./Restaurants.css"; // ✅ Import the CSS file in the same folder
+import "./Restaurants.css"; // Import the CSS file in the same folder
 
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL; // Fetch backend URL from environment variables
 

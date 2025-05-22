@@ -1,6 +1,7 @@
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL; // Get backend URL from environment variables
 
-// Fetch admin-owned restaurants
+//! Fetch admin-owned restaurants
+//This function sends a request to the backend using the admin token to fetch restaurants.
 const fetchAdminRestaurants = async () => {
   try {
     const res = await fetch(`${BACKEND_URL}/restaurants/admin`, {

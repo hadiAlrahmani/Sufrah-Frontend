@@ -4,10 +4,12 @@ import { fetchAdminRestaurants } from "../../services/adminService"; // Import a
 import RestaurantStatistics from "./RestaurantStatistics/RestaurantStatistics"; // Import RestaurantStatistics component
 import "./AdminDashboard.css"; // Import the CSS file for styles
 
+//! fetch resturants and store in state
 const AdminDashboard = () => {
   const [restaurants, setRestaurants] = useState([]); // State for storing restaurants
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null); // State for storing selected restaurant's ID
 
+  // here the fetchAdminRestaurants function gets called inside a useEffect It fetches restaurant data from the backend. Then setRestaurants(...) stores that data in state And that’s how the restaurant cards/buttons are displayed in the UI.
   useEffect(() => {
     const loadData = async () => {
       const fetchedRestaurants = await fetchAdminRestaurants(); // Fetch restaurants for admin

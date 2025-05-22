@@ -1,3 +1,5 @@
+//! Authentication Service
+
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL; // Get backend URL from environment variables
 
 // Retrieve the user from the token stored in local storage
@@ -7,6 +9,7 @@ const getUser = () => {
   const user = JSON.parse(atob(token.split('.')[1])); // Decode and parse the token to get user info
   return user; // Return user object
 };
+
 
 // Signup function to register a new user
 const signup = async (formData) => { 
@@ -27,6 +30,8 @@ const signup = async (formData) => {
   }
 };
 
+//! SignIn Auth
+// I created a separate authService file to handle the API requests. This helps keep my code clean. It sends the login credentials to the backend API, and if correct, a JWT token is created from the backend and is received here in the frontend which is then saved securely in local storage.
 // Signin function for user authentication
 const signin = async (user) => {
   try {

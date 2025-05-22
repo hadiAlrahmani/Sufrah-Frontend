@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import * as authService from "../../services/authService"; // Import authentication service
 import "./SigninForm.css"; // Import the CSS file for styling
 
+//! State Management
 const SigninForm = (props) => {
   const navigate = useNavigate(); // Hook to programmatically navigate
   const [message, setMessage] = useState([""]); // State for feedback messages
+  //Used React’s state hook to store the user’s input (username and password)
   const [formData, setFormData] = useState({
     username: "", // State for username
     password: "", // State for password
@@ -22,6 +24,8 @@ const SigninForm = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form data
   };
 
+  //! Form Submittion
+  //When the user submits the login form, the function sends the username and password to the backend through the authService. If the login is successful, the user data is saved and the user is redirected to the home page. 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
